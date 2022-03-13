@@ -66,4 +66,26 @@
   width: 44px;
   animation-delay: 2.6s;
 }
+.aboutme
+{
+    background-color: #55f400;
+    border: 5px solid rgb(222, 11, 246);
+    padding:100px;
+    margin: 10px left;
+    width: 25%;
+    text-align: left;
+    font-size: 20px;
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    color: rgb(4, 42, 255);
+    font-weight: bold;
+
+
+}
+.next{
+  padding: 20px;
+  margin: 1px left;
+  width: 20%;
+  text-align: left;
+
+}
 
