@@ -88,4 +88,8 @@
   text-align: left;
 
 }
+.button{
+   background-color: #55f400;
+    border: 5px solid rgb(222, 11, 246);
+}
 
