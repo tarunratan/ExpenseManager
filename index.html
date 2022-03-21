@@ -1,64 +1,61 @@
-<!DOCTYPE html>
-<html lang="en">
+
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-   
-    <link rel="stylesheet" href="style.css" />
-    <title>Solidity voting</title>
-  </head> 
-
-
+    <!-- Moralis SDK code -->
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script src="https://unpkg.com/moralis/dist/moralis.js"></script>
+  </head>
   <body>
-    <div class ="hero">
+    <h1>Moralis Gas Stats</h1>
 
-    <h1>Tarunratan</h1>
-    <h2> <br> Solidity <br> Voting</h2>
-    <p>🚀 Get reay for the new Voting model!  </p>
+    <button id="btn-login">Moralis Login</button>
+    <button id="btn-logout">Logout</button>
+    <button id="btn-get-stats">Refresh Stats</button>
 
-    <a href="index2.html" class="button">Get Started</a>
-      <div class ="tarun">
-        <img src="tarun.png">
-        <img src="tarun.png">
-        <img src="tarun.png">
-        <img src="tarun.png">
-        <img src="tarun.png">
-        <img src="tarun.png"> 
-  
-      </div>
-      <a href="index2.html" class="button" style="color:#FF0000;">Get Started </a>
-    </div>
-    <div class="aboutme">
-      <h1>About_me</h1>
-      <div class="image">
-      
-        <img src="tarun.jpg" width="90" height=auto; >
+    <script>
+      // connect to Moralis server
+      const serverUrl = "https://y6imoii92ukk.usemoralis.com:2053/server";
+      const appId = "FGV32OXP4dPEDabM7BSIRTmgfAKgthQKntfdEcJz";
+      Moralis.start({ serverUrl, appId });
 
-      </div>
-      <script>
-          var txt = "I am a student at the University of JNTUH. I am majoring in Computer Science and I am currently exploring  at Blockchain. I am currently working on a project named 🚀 Solidity Voting";
-          var speed = 50;
-          var index = 0;
-           var y = document.getElementsByClassName("aboutme")[0];
-       
-          var timer= setInterval(function() 
-          {
-              if (index < txt.length) {
-                  y.innerHTML += txt.charAt(index);
-                  index++;
-                  
-              } 
-          }, speed);
-   
-      </script>
-    </div>
-   <div class="next">
-     <h2>NARUTO</h2>
-     <body><video controls="" autoplay="" name="media"><source src="video.mp4" width="80" height="80" type="video/mp4"></video></body>
-    </div>
+      async function login() {
+        let user = Moralis.User.current();
+        if (!user) {
+          user = await Moralis.Web3.authenticate();
+        }
+        console.log("logged in user:", user);
+        getStats();
+      }
 
-    
- 
+      async function logOut() {
+        await Moralis.User.logOut();
+        console.log("logged out");
+      }
+
+      // bind button click handlers
+      document.getElementById("btn-login").onclick = login;
+      document.getElementById("btn-logout").onclick = logOut;
+      document.getElementById("btn-get-stats").onclick = getStats;
+
+      function getStats() {
+        const user = Moralis.User.current();
+        if (user) {
+          getUserTransactions(user);
+        }
+      }
+
+      async function getUserTransactions(user) {
+        // create query
+        const query = new Moralis.Query("EthTransactions");
+        query.equalTo("from_address", user.get("ethAddress"));
+
+        // run query
+        const results = await query.find();
+        console.log("user transactions:", results);
+      }
+
+      //get stats on page load
+      getStats();
+    </script>
   </body>
 </html>
